@@ -10,11 +10,17 @@ public interface Economy {
 
     double getBalance();
 
+    void setBalance(double balance);
+
+    double getMaxBalance();
+
     EconomyResponse withdraw(double amount);
 
     EconomyResponse deposit(double amount);
 
     EconomyPluralizer getPluralizer();
+
+    int getFractionalDigits();
 
     String format(double value);
 
