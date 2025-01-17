@@ -12,6 +12,7 @@ version = "1.0-SNAPSHOT"
 repositories {
     mavenCentral()
     maven("https://jitpack.io")
+    maven("https://repo.extendedclip.com/releases/")
     maven("https://repo.papermc.io/repository/maven-public/")
 }
 
@@ -21,6 +22,7 @@ dependencies {
 
     compileOnly("com.destroystokyo.paper:paper-api:1.16.5-R0.1-SNAPSHOT")
     compileOnly("com.github.MilkBowl:VaultAPI:1.7")
+    compileOnly("me.clip:placeholderapi:2.11.6")
 
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
@@ -52,5 +54,6 @@ bukkit {
     author = "Xkyrell"
     version = project.version.toString()
     main = "me.xkyrell.kseconomy.EconomyPlugin"
+    softDepend = listOf("PlaceholderAPI", "Vault")
     apiVersion = "1.16"
 }
