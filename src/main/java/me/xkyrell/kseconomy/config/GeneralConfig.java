@@ -2,25 +2,32 @@ package me.xkyrell.kseconomy.config;
 
 import lombok.Getter;
 import me.xkyrell.kseconomy.database.ConnectionPool;
+import me.xkyrell.kseconomy.database.impl.MySQLConnectionPool;
+import me.xkyrell.kseconomy.database.impl.SQLiteConnectionPool;
 import me.xkyrell.kseconomy.economy.*;
 import me.xkyrell.kseconomy.economy.impl.*;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
+import java.io.File;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Getter
 public class GeneralConfig extends Config {
 
-    private boolean vaultHook;
-    private ConnectionPool connectionPool;
-
+    private final File dataFolder;
     private final Map<String, Economy> economies = new HashMap<>();
+
+    @Getter
+    private boolean vaultHook;
+    @Getter
+    private ConnectionPool connectionPool;
 
     public GeneralConfig(Plugin plugin) {
         super(plugin, "config");
+
+        dataFolder = plugin.getDataFolder();
 
         updateOrLoad();
     }
@@ -40,9 +47,36 @@ public class GeneralConfig extends Config {
         loadEconomies(getSource().getConfigurationSection("economies"));
     }
 
-    // TODO: database initialization
     private ConnectionPool loadDatabase(ConfigurationSection dbSection) {
-        return null;
+        String type = dbSection.getString("type", "sqlite");
+        String poolName = dbSection.getString("pool-name");
+        int maxPoolSize = dbSection.getInt("max-pool-size");
+        return (type.equalsIgnoreCase("mysql"))
+                ? createMySQLConnection(dbSection, poolName, maxPoolSize)
+                : createSQLiteConnection(poolName, maxPoolSize);
+    }
+
+    private ConnectionPool createSQLiteConnection(String poolName, int maxPoolSize) {
+        return SQLiteConnectionPool.builder()
+                .poolName(poolName)
+                .maxPoolSize(maxPoolSize)
+                .uri(dataFolder.getAbsolutePath().concat("\\storage.db"))
+                .build();
+    }
+
+    private ConnectionPool createMySQLConnection(ConfigurationSection dbSection, String poolName, int maxPoolSize) {
+        String hostname = dbSection.getString("hostname");
+        String port = dbSection.getString("port");
+        String database = dbSection.getString("database");
+        String username = dbSection.getString("username");
+        String password = dbSection.getString("password");
+        return MySQLConnectionPool.builder()
+                .poolName(poolName)
+                .maxPoolSize(maxPoolSize)
+                .uri(hostname, port, database)
+                .username(username)
+                .password(password)
+                .build();
     }
 
     private void loadEconomies(ConfigurationSection economiesSection) {

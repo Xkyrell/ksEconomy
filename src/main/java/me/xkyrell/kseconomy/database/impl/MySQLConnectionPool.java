@@ -2,6 +2,8 @@ package me.xkyrell.kseconomy.database.impl;
 
 import com.google.common.base.Preconditions;
 import com.zaxxer.hikari.HikariDataSource;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import me.xkyrell.kseconomy.database.AbstractConnectionPool;
 import me.xkyrell.kseconomy.database.ConnectionPool;
 
@@ -11,7 +13,12 @@ public final class MySQLConnectionPool extends AbstractConnectionPool {
         super(dataSource);
     }
 
-    public final class Builder extends AbstractBuilder<Builder> {
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    public static final class Builder extends AbstractBuilder<Builder> {
 
         private String username = "root";
         private String password;

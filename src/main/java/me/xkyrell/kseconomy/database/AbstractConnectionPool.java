@@ -4,13 +4,14 @@ import com.zaxxer.hikari.HikariDataSource;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import me.xkyrell.kseconomy.database.executor.QueryExecutor;
 import me.xkyrell.kseconomy.util.Buildable;
 import java.sql.Connection;
 import java.sql.SQLException;
 
 @Getter
 @RequiredArgsConstructor
-public class AbstractConnectionPool implements ConnectionPool {
+public abstract class AbstractConnectionPool implements ConnectionPool {
     
     protected final HikariDataSource dataSource;
 
@@ -22,6 +23,11 @@ public class AbstractConnectionPool implements ConnectionPool {
         catch (SQLException e) {
             throw new RuntimeException("An exception found due getting connection:", e);
         }
+    }
+
+    @Override
+    public QueryExecutor getQueryExecutor() {
+        return null; // TODO: Implement the logic for QueryExecutor.
     }
 
     @Override

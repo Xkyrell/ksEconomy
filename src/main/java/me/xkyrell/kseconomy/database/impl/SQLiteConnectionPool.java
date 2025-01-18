@@ -2,6 +2,8 @@ package me.xkyrell.kseconomy.database.impl;
 
 import com.google.common.base.Preconditions;
 import com.zaxxer.hikari.HikariDataSource;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import me.xkyrell.kseconomy.database.AbstractConnectionPool;
 import me.xkyrell.kseconomy.database.ConnectionPool;
 import java.io.File;
@@ -12,7 +14,12 @@ public final class SQLiteConnectionPool extends AbstractConnectionPool {
         super(dataSource);
     }
 
-    public final class Builder extends AbstractBuilder<Builder> {
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    @NoArgsConstructor(access = AccessLevel.PRIVATE)
+    public static final class Builder extends AbstractBuilder<Builder> {
 
         public Builder uri(File uri) {
             return uri(uri.getAbsoluteFile());
