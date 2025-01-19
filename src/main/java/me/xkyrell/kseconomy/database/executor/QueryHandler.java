@@ -1,10 +1,10 @@
 package me.xkyrell.kseconomy.database.executor;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Wrapper;
 
-public interface QueryHandler<T> {
+public interface QueryHandler<T extends AutoCloseable & Wrapper, R> {
 
-    T handle(ResultSet resultSet) throws SQLException;
+    R handle(T t) throws SQLException;
 
 }

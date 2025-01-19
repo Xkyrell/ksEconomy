@@ -5,14 +5,21 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import me.xkyrell.kseconomy.database.executor.QueryExecutor;
+import me.xkyrell.kseconomy.database.executor.impl.SimpleQueryExecutor;
 import me.xkyrell.kseconomy.util.Buildable;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.concurrent.*;
 
 @Getter
 @RequiredArgsConstructor
 public abstract class AbstractConnectionPool implements ConnectionPool {
-    
+
+    private static final ExecutorService FIXED_EXECUTOR_SERVICE = new ThreadPoolExecutor(
+            0, 4, 60L,
+            TimeUnit.SECONDS, new SynchronousQueue<>()
+    );
+
     protected final HikariDataSource dataSource;
 
     @Override
@@ -27,7 +34,7 @@ public abstract class AbstractConnectionPool implements ConnectionPool {
 
     @Override
     public QueryExecutor getQueryExecutor() {
-        return null; // TODO: Implement the logic for QueryExecutor.
+        return new SimpleQueryExecutor(this, FIXED_EXECUTOR_SERVICE);
     }
 
     @Override
