@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import me.xkyrell.kseconomy.database.AbstractConnectionPool;
 import me.xkyrell.kseconomy.database.ConnectionPool;
+import me.xkyrell.kseconomy.database.ConnectionType;
 
 public final class MySQLConnectionPool extends AbstractConnectionPool {
 
@@ -15,6 +16,11 @@ public final class MySQLConnectionPool extends AbstractConnectionPool {
 
     public static Builder builder() {
         return new Builder();
+    }
+
+    @Override
+    public ConnectionType getType() {
+        return ConnectionType.MYSQL;
     }
 
     @NoArgsConstructor(access = AccessLevel.PRIVATE)

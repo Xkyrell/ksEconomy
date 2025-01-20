@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import me.xkyrell.kseconomy.database.AbstractConnectionPool;
 import me.xkyrell.kseconomy.database.ConnectionPool;
+import me.xkyrell.kseconomy.database.ConnectionType;
 import java.io.File;
 
 public final class SQLiteConnectionPool extends AbstractConnectionPool {
@@ -16,6 +17,11 @@ public final class SQLiteConnectionPool extends AbstractConnectionPool {
 
     public static Builder builder() {
         return new Builder();
+    }
+
+    @Override
+    public ConnectionType getType() {
+        return ConnectionType.SQLITE;
     }
 
     @NoArgsConstructor(access = AccessLevel.PRIVATE)

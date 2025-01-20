@@ -1,0 +1,8 @@
+-- ksEconomy Schema
+
+CREATE TABLE IF NOT EXISTS players (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    uuid VARCHAR(32) UNIQUE NOT NULL,
+    playername VARCHAR(16) NOT NULL,
+    economies JSON NOT NULL
+) DEFAULT CHARSET=utf8mb4;

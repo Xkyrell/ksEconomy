@@ -9,6 +9,8 @@ public interface ConnectionPool {
 
     Connection getConnection();
 
+    ConnectionType getType();
+
     DataSource getDataSource();
 
     QueryExecutor getQueryExecutor();
