@@ -1,0 +1,50 @@
+#
+# Economy configuration
+# You can create any number of economies with any options
+#
+
+general:
+  # Enable or disable integration with Vault for economy handling
+  vault-enabled: false
+
+database:
+  # Configuration for the database connection
+  # Type of the database (SQLite, MySQL)
+  type: SQLite
+  # Database server hostname (e.g., '127.0.0.1' for local)
+  hostname: '127.0.0.1'
+  # Port for the database connection
+  port: '3306'
+  # Name of the database to use
+  database: 'economy'
+  # Database username
+  username: 'root'
+  # Database password
+  password: ''
+  # Name of the connection pool
+  pool-name: 'EconomyPool'
+  # Maximum number of connections in the pool
+  max-pool-size: 4
+
+economies:
+  # Configuration for each economy type
+  dollar:
+    # Currency symbol to represent the economy
+    symbol: '$'
+    # Singular form of the currency name
+    singular: 'dollar'
+    # Plural form of the currency name
+    plural: 'dollars'
+    # Format for displaying the currency (e.g., two decimal places)
+    format: '#.##'
+    # Starting balance for new users
+    start-balance: 500.0
+    # Maximum possible balance for any user
+    max-balance: 1000000000.0
+  euro:
+    symbol: '€'
+    singular: 'euro'
+    plural: 'euros'
+    format: '#.##'
+    start-balance: 0.0
+    max-balance: 100000.0
