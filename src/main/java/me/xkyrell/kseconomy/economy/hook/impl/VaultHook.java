@@ -198,6 +198,9 @@ public final class VaultHook implements Hook {
             }
 
             playerService.register(playerName, EconomyOnlinePlayer.class);
+            playerService.getResolver().resolve(playerName).ifPresent(player -> {
+                player.setEconomies(economyResolver.getEconomies().stream().toList());
+            });
             return true;
         }
 

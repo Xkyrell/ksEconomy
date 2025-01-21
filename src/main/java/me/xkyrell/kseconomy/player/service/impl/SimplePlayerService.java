@@ -27,6 +27,11 @@ public class SimplePlayerService implements PlayerService {
     }
 
     @Override
+    public void register(@NonNull EconomyPlayer<?> player) {
+        players.put(player.getUuid(), player);
+    }
+
+    @Override
     public void unregister(@NonNull String playerName) {
         unregister(getUUIDByName(playerName));
     }

@@ -11,6 +11,8 @@ public interface PlayerService {
 
     void register(@NonNull String playerName, @NonNull Class<? extends EconomyPlayer<?>> clazz);
 
+    void register(@NonNull EconomyPlayer<?> player);
+
     void unregister(@NonNull String playerName);
 
     void unregister(@NonNull UUID uuid);
