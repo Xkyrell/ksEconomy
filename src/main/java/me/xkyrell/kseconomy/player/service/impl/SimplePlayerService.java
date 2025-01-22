@@ -7,13 +7,14 @@ import me.xkyrell.kseconomy.player.impl.*;
 import me.xkyrell.kseconomy.player.service.*;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.Plugin;
+import javax.inject.Inject;
 import java.util.*;
 
-@RequiredArgsConstructor
+@RequiredArgsConstructor(onConstructor_ = @Inject)
 public class SimplePlayerService implements PlayerService {
 
     private final Plugin plugin;
-    private final Map<UUID, EconomyPlayer<? extends OfflinePlayer>> players;
+    private final Map<UUID, EconomyPlayer<? extends OfflinePlayer>> players = new HashMap<>();
 
     @Override
     public void register(@NonNull String playerName, @NonNull Class<? extends EconomyPlayer<?>> clazz) {

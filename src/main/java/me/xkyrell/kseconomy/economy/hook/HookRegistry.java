@@ -8,6 +8,7 @@ import me.xkyrell.kseconomy.util.UncheckedConsumer;
 import org.bukkit.plugin.Plugin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import javax.inject.Inject;
 import java.util.List;
 
 public class HookRegistry {
@@ -17,6 +18,7 @@ public class HookRegistry {
     private final Plugin plugin;
     private final List<Hook> hooks;
 
+    @Inject
     public HookRegistry(Plugin plugin, PlayerService playerService, EconomyResolver economyResolver) {
         this.plugin = plugin;
         this.hooks = List.of(

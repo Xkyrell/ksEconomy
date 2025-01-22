@@ -11,8 +11,9 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import javax.inject.Inject;
 
-@RequiredArgsConstructor
+@RequiredArgsConstructor(onConstructor_ = @Inject)
 public class PlayerListener implements Listener {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PlayerListener.class);

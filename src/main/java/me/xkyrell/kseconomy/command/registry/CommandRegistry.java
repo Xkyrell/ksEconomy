@@ -10,6 +10,7 @@ import me.xkyrell.kseconomy.player.repository.PlayerRepository;
 import me.xkyrell.kseconomy.player.service.PlayerService;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.Plugin;
+import javax.inject.Inject;
 import java.util.Set;
 import java.util.function.Consumer;
 
@@ -20,6 +21,7 @@ public class CommandRegistry {
     private final PlayerRepository repository;
     private final Plugin plugin;
 
+    @Inject
     public CommandRegistry(
             PlayerService playerService, EconomyResolver economyResolver,
             PlayerRepository repository, GeneralConfig general,

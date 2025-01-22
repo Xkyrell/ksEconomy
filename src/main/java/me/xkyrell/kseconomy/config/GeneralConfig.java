@@ -8,6 +8,7 @@ import me.xkyrell.kseconomy.economy.*;
 import me.xkyrell.kseconomy.economy.impl.*;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
+import javax.inject.Inject;
 import java.io.File;
 import java.text.DecimalFormat;
 import java.util.HashMap;
@@ -24,6 +25,7 @@ public class GeneralConfig extends Config {
     @Getter
     private ConnectionPool connectionPool;
 
+    @Inject
     public GeneralConfig(Plugin plugin) {
         super(plugin, "config");
 

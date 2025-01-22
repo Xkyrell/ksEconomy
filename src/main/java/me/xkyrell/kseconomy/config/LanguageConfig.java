@@ -4,6 +4,7 @@ import me.xkyrell.kseconomy.util.Colors;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
 import org.bukkit.plugin.Plugin;
+import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
@@ -13,6 +14,7 @@ public final class LanguageConfig extends Config {
 
     private Map<String, Component> localization = new HashMap<>();
 
+    @Inject
     public LanguageConfig(Plugin plugin) {
         super(plugin, "language");
 
