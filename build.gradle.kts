@@ -26,6 +26,9 @@ dependencies {
     compileOnly("com.github.MilkBowl:VaultAPI:1.7")
     compileOnly("me.clip:placeholderapi:2.11.6")
 
+    implementation("com.google.dagger:dagger:2.48")
+    annotationProcessor("com.google.dagger:dagger-compiler:2.48")
+
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
 }
