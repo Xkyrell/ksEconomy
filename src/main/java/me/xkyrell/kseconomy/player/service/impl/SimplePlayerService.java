@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import me.xkyrell.kseconomy.player.*;
 import me.xkyrell.kseconomy.player.impl.*;
 import me.xkyrell.kseconomy.player.service.*;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.Plugin;
 import javax.inject.Inject;
 import java.util.*;
@@ -14,12 +13,12 @@ import java.util.*;
 public class SimplePlayerService implements PlayerService {
 
     private final Plugin plugin;
-    private final Map<UUID, EconomyPlayer<? extends OfflinePlayer>> players = new HashMap<>();
+    private final Map<UUID, EconomyPlayer<?>> players = new HashMap<>();
 
     @Override
     public void register(@NonNull String playerName, @NonNull Class<? extends EconomyPlayer<?>> clazz) {
         UUID uuid = getUUIDByName(playerName);
-        EconomyPlayer<? extends OfflinePlayer> player = switch (clazz.getSimpleName()) {
+        EconomyPlayer<?> player = switch (clazz.getSimpleName()) {
             case "EconomyOnlinePlayer" -> new EconomyOnlinePlayer(uuid);
             case "EconomyOfflinePlayer" -> new EconomyOfflinePlayer(uuid);
             default -> throw new IllegalArgumentException("Unsupported Player class: " + clazz.getName());
@@ -54,20 +53,20 @@ public class SimplePlayerService implements PlayerService {
     @RequiredArgsConstructor
     private final class SimpleResolver implements PlayerResolver {
 
-        private final Map<UUID, EconomyPlayer<? extends OfflinePlayer>> players;
+        private final Map<UUID, EconomyPlayer<?>> players;
 
         @Override
-        public Optional<GeneralEconomyPlayer> resolve(@NonNull String name) {
+        public Optional<EconomyPlayer<?>> resolve(@NonNull String name) {
             return resolve(getUUIDByName(name));
         }
 
         @Override
-        public Optional<GeneralEconomyPlayer> resolve(@NonNull UUID uuid) {
-            return Optional.ofNullable((GeneralEconomyPlayer) players.get(uuid));
+        public Optional<EconomyPlayer<?>> resolve(@NonNull UUID uuid) {
+            return Optional.ofNullable(players.get(uuid));
         }
 
         @Override
-        public Collection<EconomyPlayer<? extends OfflinePlayer>> getPlayers() {
+        public Collection<EconomyPlayer<?>> getPlayers() {
             return players.values();
         }
     }

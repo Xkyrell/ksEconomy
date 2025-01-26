@@ -4,14 +4,13 @@ import lombok.RequiredArgsConstructor;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import me.xkyrell.kseconomy.economy.Economy;
 import me.xkyrell.kseconomy.economy.hook.Hook;
-import me.xkyrell.kseconomy.player.GeneralEconomyPlayer;
+import me.xkyrell.kseconomy.player.EconomyPlayer;
 import me.xkyrell.kseconomy.player.service.PlayerService;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 public final class PlaceholderApiHook extends PlaceholderExpansion implements Hook {
@@ -35,12 +34,12 @@ public final class PlaceholderApiHook extends PlaceholderExpansion implements Ho
             return null;
         }
 
-        Optional<GeneralEconomyPlayer> economyPlayerOptional = playerService.getResolver().resolve(player.getUniqueId());
-        if (economyPlayerOptional.isEmpty()) {
+        var cachedPlayer = playerService.getResolver().resolve(player.getUniqueId());
+        if (cachedPlayer.isEmpty()) {
             return "Invalid economy player";
         }
 
-        GeneralEconomyPlayer economyPlayer = economyPlayerOptional.get();
+        EconomyPlayer<?> economyPlayer = cachedPlayer.get();
         Economy economy = economyPlayer.getEconomyByName(parts.get(parts.size() - 1));
         if (economy == null) {
             return "Invalid economy";

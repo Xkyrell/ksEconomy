@@ -3,20 +3,22 @@ package me.xkyrell.kseconomy.player.service;
 import lombok.NonNull;
 import me.xkyrell.kseconomy.player.*;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
 public interface PlayerResolver {
 
-    Optional<GeneralEconomyPlayer> resolve(@NonNull String name);
+    Optional<EconomyPlayer<?>> resolve(@NonNull String name);
 
-    Optional<GeneralEconomyPlayer> resolve(@NonNull UUID uuid);
+    Optional<EconomyPlayer<?>> resolve(@NonNull UUID uuid);
 
-    Collection<EconomyPlayer<? extends OfflinePlayer>> getPlayers();
+    Collection<EconomyPlayer<?>> getPlayers();
 
-    default Optional<GeneralEconomyPlayer> resolve(@NonNull Player player) {
-        return resolve(player.getName());
+    @SuppressWarnings("unchecked")
+    default <P extends OfflinePlayer> Optional<EconomyPlayer<P>> resolve(@NonNull P player) {
+        return resolve(Objects.requireNonNull(player.getName()))
+                .map(instance -> (EconomyPlayer<P>) instance);
     }
 }
