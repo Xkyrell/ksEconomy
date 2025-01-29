@@ -34,7 +34,7 @@ economies:
     # Singular form of the currency name
     singular: 'dollar'
     # Plural form of the currency name
-    plural: 'dollars'
+    plural: ['dollars']
     # Format for displaying the currency (e.g., two decimal places)
     format: '#.##'
     # Starting balance for new users
@@ -44,7 +44,7 @@ economies:
   euro:
     symbol: '€'
     singular: 'euro'
-    plural: 'euros'
+    plural: ['euros']
     format: '#.##'
     start-balance: 0.0
     max-balance: 100000.0

@@ -1,5 +1,6 @@
 package me.xkyrell.kseconomy.economy;
 
+import lombok.NonNull;
 import net.milkbowl.vault.economy.EconomyResponse;
 
 public interface Economy {
@@ -26,6 +27,20 @@ public interface Economy {
 
     default boolean hasEnoughBalance(double amount) {
         return getBalance() >= amount;
+    }
+
+    default String formatAsPluralize() {
+        return formatAs(getPluralizer().mapper()
+                .apply(getBalance())
+        );
+    }
+
+    default String formatAsSymbol() {
+        return formatAs(getSymbol());
+    }
+
+    default String formatAs(@NonNull String suffix) {
+        return format().concat(" ").concat(suffix);
     }
 
     default String format() {

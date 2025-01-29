@@ -1,5 +1,6 @@
 package me.xkyrell.kseconomy.player.service.impl;
 
+import dagger.Reusable;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import me.xkyrell.kseconomy.player.*;
@@ -9,6 +10,7 @@ import org.bukkit.plugin.Plugin;
 import javax.inject.Inject;
 import java.util.*;
 
+@Reusable
 @RequiredArgsConstructor(onConstructor_ = @Inject)
 public class SimplePlayerService implements PlayerService {
 
@@ -23,12 +25,12 @@ public class SimplePlayerService implements PlayerService {
             case "EconomyOfflinePlayer" -> new EconomyOfflinePlayer(uuid);
             default -> throw new IllegalArgumentException("Unsupported Player class: " + clazz.getName());
         };
-        players.put(uuid, player);
+        register(player);
     }
 
     @Override
     public void register(@NonNull EconomyPlayer<?> player) {
-        players.put(player.getUuid(), player);
+        players.putIfAbsent(player.getUuid(), player);
     }
 
     @Override

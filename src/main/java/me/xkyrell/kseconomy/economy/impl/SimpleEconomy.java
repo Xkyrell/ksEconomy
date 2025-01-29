@@ -57,6 +57,6 @@ public class SimpleEconomy implements Economy {
 
     @Override
     public String format(double value) {
-        return format.format(value) + pluralizer.mapper().apply(value);
+        return format.format(value);
     }
 }

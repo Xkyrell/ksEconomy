@@ -36,8 +36,8 @@ public class EconomyPlugin extends JavaPlugin {
         commandRegistry = component.getCommandRegistry();
         hookRegistry = component.getHookRegistry();
 
-        component.getCommandRegistry().registerAll();
-        component.getHookRegistry().registerAll();
+        commandRegistry.registerAll();
+        hookRegistry.registerAll();
 
         getServer().getPluginManager().registerEvents(
                 component.getPlayerListener(), this

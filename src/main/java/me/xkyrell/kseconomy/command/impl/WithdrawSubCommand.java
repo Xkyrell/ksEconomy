@@ -43,8 +43,8 @@ public class WithdrawSubCommand extends AbstractSubCommand {
             }
 
             Map<String, String> placeholders = Map.of(
-                    "{balance_formatted_symbol}", foundedEconomy.getSymbol(),
-                    "{balance_formatted}", foundedEconomy.format(),
+                    "{balance_formatted_symbol}", foundedEconomy.formatAsSymbol(),
+                    "{balance_formatted}", foundedEconomy.formatAsPluralize(),
                     "{sender}", sender.getName(),
                     "{receiver}", args[2]
             );
@@ -56,7 +56,10 @@ public class WithdrawSubCommand extends AbstractSubCommand {
             }
 
             foundedEconomy.withdraw(enteredAmount.get());
-            sender.sendMessage(language.getPrefixedMsg("withdraw-funds-receiver", placeholders));
+            Player onlinePlayer = loadedPlayer.toBukkitPlayer().getPlayer();
+            if (onlinePlayer != null) {
+                onlinePlayer.sendMessage(language.getPrefixedMsg("withdraw-funds-receiver", placeholders));
+            }
             sender.sendMessage(language.getPrefixedMsg("withdraw-funds-sender", placeholders));
         }, () -> sender.sendMessage(language.getPrefixedMsg("unknown-player")));
         return false;

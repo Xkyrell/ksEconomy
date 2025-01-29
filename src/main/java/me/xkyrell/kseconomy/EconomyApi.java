@@ -10,7 +10,7 @@ public interface EconomyApi {
 
     EconomyResolver getEconomyResolver();
 
-    default PlayerResolver getPlayerResolve() {
+    default PlayerResolver getPlayerResolver() {
         return getPlayerService().getResolver();
     }
 }

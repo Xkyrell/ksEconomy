@@ -56,8 +56,8 @@ public class BalanceCommand extends AbstractCommand {
             }
 
             Map<String, String> placeholders = Map.of(
-                    "{balance_formatted_symbol}", foundedEconomy.getSymbol(),
-                    "{balance_formatted}", foundedEconomy.format()
+                    "{balance_formatted_symbol}", foundedEconomy.formatAsSymbol(),
+                    "{balance_formatted}", foundedEconomy.formatAsPluralize()
             );
 
             String key = args.length < 2 ? "balance" : "balance-other";
