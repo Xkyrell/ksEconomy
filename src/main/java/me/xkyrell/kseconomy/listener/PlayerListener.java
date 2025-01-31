@@ -2,6 +2,8 @@ package me.xkyrell.kseconomy.listener;
 
 import lombok.RequiredArgsConstructor;
 import me.xkyrell.kseconomy.economy.EconomyResolver;
+import me.xkyrell.kseconomy.player.EconomyPlayer;
+import me.xkyrell.kseconomy.player.impl.EconomyOnlinePlayer;
 import me.xkyrell.kseconomy.player.repository.PlayerRepository;
 import me.xkyrell.kseconomy.player.service.PlayerService;
 import org.bukkit.Server;
@@ -29,16 +31,24 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
-        repository.loadPlayer(event.getPlayer())
-                .thenAccept(player -> {
-                    if (player.getEconomies() == null) {
-                        player.setEconomies(economyResolver
-                                .getEconomies().stream().toList()
-                        );
-                    }
-                    LOGGER.info("Player {} loaded.", player.getName());
-                    playerService.register(player);
-                });
+        Player player = event.getPlayer();
+        var cachedPlayer = playerService.getResolver().resolve(player);
+        if (cachedPlayer.isPresent()) {
+            EconomyPlayer<?> onlinePlayer = new EconomyOnlinePlayer(player.getUniqueId());
+            onlinePlayer.setEconomies(cachedPlayer.get().getEconomies());
+
+            playerService.unregister(player);
+            playerService.register(onlinePlayer);
+            return;
+        }
+
+        repository.loadPlayer(player).thenAccept(economyPlayer -> {
+            if (economyPlayer.getEconomies() == null) {
+                economyPlayer.setEconomies(economyResolver.getEconomies().stream().toList());
+            }
+            playerService.register(economyPlayer);
+        });
+        LOGGER.info("Player {} loaded.", player.getName());
     }
 
     @EventHandler
@@ -52,23 +62,26 @@ public class PlayerListener implements Listener {
         playerService.unregister(player);
     }
 
-    @EventHandler
-    public void onPluginEnable(PluginEnableEvent event) {
-        if (!plugin.equals(event.getPlugin())) {
-            return;
-        }
-
-        Server server = event.getPlugin().getServer();
-        playerService.registerAll(server.getOnlinePlayers());
-    }
-
-    @EventHandler
-    public void onPluginDisable(PluginDisableEvent event) {
-        if (!plugin.equals(event.getPlugin())) {
-            return;
-        }
-
-        Server server = event.getPlugin().getServer();
-        playerService.unregisterAll(server.getOnlinePlayers());
-    }
+//
+//    TODO: batch player loading/unloading
+//
+//    @EventHandler
+//    public void onPluginEnable(PluginEnableEvent event) {
+//        if (!plugin.equals(event.getPlugin())) {
+//            return;
+//        }
+//
+//        Server server = event.getPlugin().getServer();
+//        playerService.registerAll(server.getOnlinePlayers());
+//    }
+//
+//    @EventHandler
+//    public void onPluginDisable(PluginDisableEvent event) {
+//        if (!plugin.equals(event.getPlugin())) {
+//            return;
+//        }
+//
+//        Server server = event.getPlugin().getServer();
+//        playerService.unregisterAll(server.getOnlinePlayers());
+//    }
 }

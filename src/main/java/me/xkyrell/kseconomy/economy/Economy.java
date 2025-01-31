@@ -11,7 +11,7 @@ public interface Economy {
 
     double getBalance();
 
-    void setBalance(double balance);
+    EconomyResponse setBalance(double balance);
 
     double getMaxBalance();
 

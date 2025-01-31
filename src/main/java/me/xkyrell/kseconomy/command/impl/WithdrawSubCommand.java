@@ -6,6 +6,7 @@ import me.xkyrell.kseconomy.config.LanguageConfig;
 import me.xkyrell.kseconomy.economy.Economy;
 import me.xkyrell.kseconomy.economy.EconomyResolver;
 import me.xkyrell.kseconomy.util.Numbers;
+import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -55,7 +56,12 @@ public class WithdrawSubCommand extends AbstractSubCommand {
                 return;
             }
 
-            foundedEconomy.withdraw(enteredAmount.get());
+            EconomyResponse response = foundedEconomy.withdraw(enteredAmount.get());
+            if (!response.transactionSuccess()) {
+                sender.sendMessage(language.getPrefixedMsg("not-double"));
+                return;
+            }
+
             Player onlinePlayer = loadedPlayer.toBukkitPlayer().getPlayer();
             if (onlinePlayer != null) {
                 onlinePlayer.sendMessage(language.getPrefixedMsg("withdraw-funds-receiver", placeholders));

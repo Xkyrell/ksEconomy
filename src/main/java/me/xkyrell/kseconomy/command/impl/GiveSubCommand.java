@@ -6,6 +6,7 @@ import me.xkyrell.kseconomy.config.LanguageConfig;
 import me.xkyrell.kseconomy.economy.Economy;
 import me.xkyrell.kseconomy.economy.EconomyResolver;
 import me.xkyrell.kseconomy.util.Numbers;
+import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -42,6 +43,18 @@ public class GiveSubCommand extends AbstractSubCommand {
                 return;
             }
 
+            Optional<Double> enteredAmount = Numbers.parseAmount(args[3]);
+            if (enteredAmount.isEmpty()) {
+                sender.sendMessage(language.getPrefixedMsg("not-double"));
+                return;
+            }
+
+            EconomyResponse response = foundedEconomy.deposit(enteredAmount.get());
+            if (!response.transactionSuccess()) {
+                sender.sendMessage(language.getPrefixedMsg("not-double"));
+                return;
+            }
+
             Map<String, String> placeholders = Map.of(
                     "{balance_formatted_symbol}", foundedEconomy.formatAsSymbol(),
                     "{balance_formatted}", foundedEconomy.formatAsPluralize(),
@@ -49,13 +62,6 @@ public class GiveSubCommand extends AbstractSubCommand {
                     "{receiver}", args[2]
             );
 
-            Optional<Double> enteredAmount = Numbers.parseAmount(args[3]);
-            if (enteredAmount.isEmpty()) {
-                sender.sendMessage(language.getPrefixedMsg("not-double"));
-                return;
-            }
-
-            foundedEconomy.deposit(enteredAmount.get());
             Player onlinePlayer = loadedPlayer.toBukkitPlayer().getPlayer();
             if (onlinePlayer != null) {
                 onlinePlayer.sendMessage(language.getPrefixedMsg("give-funds-receiver", placeholders));

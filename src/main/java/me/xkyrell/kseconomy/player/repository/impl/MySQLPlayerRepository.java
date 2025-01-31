@@ -34,7 +34,7 @@ public final class MySQLPlayerRepository extends AbstractPlayerRepository {
     @Override
     public CompletableFuture<Void> savePlayer(@NonNull EconomyPlayer<?> player) {
         String uuid = player.getUuid().toString();
-        String name = player.getName();
+        String name = player.getName().toLowerCase();
         String economies = serializeEconomies(player.getEconomies());
 
         String sql = "INSERT INTO players (uuid, playername, economies) " +

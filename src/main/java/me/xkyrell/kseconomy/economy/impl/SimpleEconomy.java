@@ -3,7 +3,6 @@ package me.xkyrell.kseconomy.economy.impl;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 import me.xkyrell.kseconomy.economy.*;
 import net.milkbowl.vault.economy.EconomyResponse;
 import java.text.DecimalFormat;
@@ -18,13 +17,26 @@ public class SimpleEconomy implements Economy {
     @Getter(AccessLevel.NONE)
     private final DecimalFormat format;
 
-    @Setter
     private double balance;
     private double maxBalance;
 
     @Override
+    public EconomyResponse setBalance(double balance) {
+        if (Double.isNaN(balance) || Double.isInfinite(balance) || balance < 0) {
+            return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, "Invalid amount format");
+        }
+
+        if (balance > maxBalance) {
+            return new EconomyResponse(balance, getBalance(), EconomyResponse.ResponseType.FAILURE, "Exceeds max balance limit");
+        }
+
+        this.balance = balance;
+        return new EconomyResponse(balance, getBalance(), EconomyResponse.ResponseType.SUCCESS, "");
+    }
+
+    @Override
     public EconomyResponse withdraw(double amount) {
-        if (Double.isNaN(amount) || Double.isInfinite(amount)) {
+        if (Double.isNaN(amount) || Double.isInfinite(amount) || amount <= 0) {
             return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, "Invalid amount format");
         }
 
@@ -38,7 +50,7 @@ public class SimpleEconomy implements Economy {
 
     @Override
     public EconomyResponse deposit(double amount) {
-        if (Double.isNaN(amount) || Double.isInfinite(amount)) {
+        if (Double.isNaN(amount) || Double.isInfinite(amount) || amount <= 0) {
             return new EconomyResponse(0, 0, EconomyResponse.ResponseType.FAILURE, "Invalid amount format");
         }
 
